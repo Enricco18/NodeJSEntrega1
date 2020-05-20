@@ -22,14 +22,15 @@ app.get("/repositories", (request, response) => {
 
 app.post("/repositories", (request, response) => {
   const {title,url,techs} = request.body;
-  repositories.push({
+  const repo= {
     id:uuid(),
     title,
     url,
     techs,
     likes:0
-  })
-  return response.json(repositories);
+  }
+  repositories.push(repo)
+  return response.json(repo);
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -51,7 +52,7 @@ app.put("/repositories/:id", (request, response) => {
     likes: repositories[index].likes
   }
 
-  return response.json(repositories);
+  return response.json(repositories[index]);
 });
 
 app.delete("/repositories/:id", (request, response) => {
@@ -64,7 +65,7 @@ app.delete("/repositories/:id", (request, response) => {
   }
 
   repositories.splice(index,1)
-  return response.json(repositories);
+  return response.status(204).json(repositories);
 });
 
 app.post("/repositories/:id/like", (request, response) => {
@@ -78,7 +79,7 @@ app.post("/repositories/:id/like", (request, response) => {
 
   repositories[index].likes +=1
 
-  return response.json(repositories);
+  return response.json(repositories[index]);
 });
 
 module.exports = app;
